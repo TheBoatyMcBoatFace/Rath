@@ -10,17 +10,11 @@ RUN git clone https://github.com/Kanaries/Rath.git && cd Rath
 # Install dependencies
 RUN yarn install
 
-# Build the client
-RUN yarn workspace rath-client build2
+# Set the working directory to the root of the workspace directory
+WORKDIR /app/Rath
 
-# Use nginx as the server
-FROM nginx:latest
+# Start the client on port 3000
+CMD ["yarn", "workspace", "rath-client", "start"]
 
-# Copy the client build files to the nginx server
-COPY --from=0 /app/packages/rath-client/build /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Expose port 3000
+EXPOSE 3000
